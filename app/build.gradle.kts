@@ -6,7 +6,9 @@ plugins {
 android {
     namespace = "Algonquin.cst2335"
     compileSdk = 33
-
+    buildFeatures {
+        viewBinding= true
+    }
     defaultConfig {
         applicationId = "Algonquin.cst2335"
         minSdk = 22
