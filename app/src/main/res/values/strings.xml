@@ -2,5 +2,6 @@
     <string name="app_name">Abdulaziz_Android_practice</string>
     <string name="hello_message">Hello world!</string>
     <string name="button_message">im a button</string>
-
+    <string name="editmessage"> IM AN EDIT TEXT </string>
+    <string name="hinttext">hint text</string>
 </resources>
