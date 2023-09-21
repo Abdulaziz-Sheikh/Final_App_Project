@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         //ask prof about char sequence and why its necessary heere
         //variableBinding.textview.setText((CharSequence) viewModel.editString);
 
-/*
+
         variableBinding.mybutton.setOnClickListener(click -> {
             viewModel.editString.postValue(variableBinding.myedittext.getText().toString());
 
@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         } );
-   */
+//image view
+        variableBinding.imageview.setOnClickListener( clck -> {
+            EditText myEdit = findViewById(R.id.myedittext);
+        myEdit.setText("Second pic");
+        } );
+        }
     }
-}
+
