@@ -28,17 +28,17 @@ public class ChatRoom extends AppCompatActivity {
           binding.textInput.setText("");
               });
 
-
+        class MyRowHolder extends RecyclerView.ViewHolder {
+            TextView messageText;
+            TextView timeText;
+            public MyRowHolder(@NonNull View itemView) {
+                super(itemView);
+                messageText = itemView.findViewById(R.id.message);
+                timeText = itemView.findViewById(R.id.time);
+            }
+        }
      binding.recycleView.setAdapter(myAdapter=new RecyclerView.Adapter<MyRowHolder>() {
-         class MyRowHolder extends RecyclerView.ViewHolder {
-             TextView messageText;
-             TextView timeText;
-             public MyRowHolder(@NonNull View itemView) {
-                 super(itemView);
-                 messageText = itemView.findViewById(R.id.message);
-                 timeText = itemView.findViewById(R.id.time);
-             }
-         }
+
 
          @NonNull
          @Override
@@ -70,7 +70,7 @@ public class ChatRoom extends AppCompatActivity {
 
 
 
-     }));
+     });;
 
     }
 }
