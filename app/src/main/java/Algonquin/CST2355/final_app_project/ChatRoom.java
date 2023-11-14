@@ -3,7 +3,7 @@ package Algonquin.CST2355.final_app_project;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +21,22 @@ public class ChatRoom extends AppCompatActivity {
     ActivityChatRoomBinding binding;
     RecyclerView.Adapter<MyRowHolder> myAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding =ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         binding.search.setOnClickListener( cli ->{
+            String userInput = binding.userInput.getText().toString();
+            messages.add(userInput);
             messages.add("New Recipe" + messages.size());
             myAdapter.notifyDataSetChanged();
         });
-
-        binding.recyclerView.setAdapter(myAdapter= new RecyclerView.Adapter<MyRowHolder>() {
-
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setAdapter( myAdapter= new RecyclerView.Adapter<MyRowHolder>() {
+            //binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
             @NonNull
             @Override
             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,11 +45,13 @@ public class ChatRoom extends AppCompatActivity {
                 return new MyRowHolder( rowBinding.getRoot());
             }
 
+
             @Override
             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
             //holds variables
-                holder.message.setText("text for now" + position);
-                holder.time.setText("time for row" + position);
+
+                holder.message.setText("Recipe:" + messages.get(position));
+                holder.time.setText("time for row" + messages.get(position));
             }
 
             @Override
