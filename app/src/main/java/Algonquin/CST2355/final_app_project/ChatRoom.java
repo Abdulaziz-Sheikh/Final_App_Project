@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ public class ChatRoom extends AppCompatActivity {
     ArrayList<String> messages = new ArrayList<>(); // no message empty storing for now
     ActivityChatRoomBinding binding;
     RecyclerView.Adapter<MyRowHolder> myAdapter;
+    private SharedPreferences prefs;
 
 
     @Override
@@ -28,12 +32,19 @@ public class ChatRoom extends AppCompatActivity {
         binding =ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.search.setOnClickListener( cli ->{
+        //initialize shared preference
+        prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String savedUserInput = prefs.getString("userInput", "");
+        binding.userInput.setText(savedUserInput);
+
+        binding.search.setOnClickListener( view ->{
             String userInput = binding.userInput.getText().toString();
+            saveUserInput(userInput);
             messages.add(userInput);
-            messages.add("New Recipe" + messages.size());
+            //messages.add("New Recipe" + messages.size()); this will hold the future recipe
             myAdapter.notifyDataSetChanged();
         });
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter( myAdapter= new RecyclerView.Adapter<MyRowHolder>() {
             //binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -60,6 +71,12 @@ public class ChatRoom extends AppCompatActivity {
             }
         });
         } //populate the list
+
+    private void saveUserInput(String userInput) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("userInput", userInput);
+        editor.apply();
+    }
 
     class MyRowHolder extends RecyclerView.ViewHolder {
         public TextView message;
