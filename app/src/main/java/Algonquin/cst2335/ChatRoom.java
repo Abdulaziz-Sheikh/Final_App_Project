@@ -5,6 +5,8 @@ import static android.app.ProgressDialog.show;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,7 @@ import Algonquin.cst2335.ui.MessageDatabase;
 import Algonquin.cst2335.ui.data.ChatMessage;
 import Algonquin.cst2335.ui.data.ChatMessageDAO;
 import Algonquin.cst2335.ui.data.ChatRoomViewModel;
+import Algonquin.cst2335.ui.data.MessageDetailsFragment;
 
 public class ChatRoom extends AppCompatActivity {
     ActivityChatRoomBinding binding;
@@ -45,6 +48,19 @@ public class ChatRoom extends AppCompatActivity {
 
         MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "databasefileonphone").build();
         mDAO = db.cmDAO();
+
+        chatModel.selectedMessage.observe(this, (newMessageValue) -> {
+            FragmentManager fMgr = getSupportFragmentManager();
+            FragmentTransaction tx = fMgr.beginTransaction();
+
+            MessageDetailsFragment chatFragment = new MessageDetailsFragment( newMessageValue);
+            tx.add(R.id.fragmentlocation, chatFragment);
+            tx.replace(R.id.fragmentlocation, chatFragment);
+            tx.commit();
+            tx.addToBackStack("");
+
+
+        });
 
         if (finalMessages == null) {
             finalMessages = new ArrayList<>();
@@ -79,9 +95,13 @@ public class ChatRoom extends AppCompatActivity {
             public MyRowHolder(@NonNull View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(clk -> {
+
                     int position = getAbsoluteAdapterPosition();
                     ChatMessage message = finalMessages.get(position);
+                    chatModel.selectedMessage.postValue(message);
 
+
+/*
                     AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
                     builder.setTitle("Warning!");
                     builder.setMessage("Are you sure you want to delete this message?");
@@ -121,9 +141,11 @@ public class ChatRoom extends AppCompatActivity {
                     });
 
                     builder.setNegativeButton("NO, I don't", (a, b) -> {
-                        /* Empty */
+
                     });
                     builder.create().show();
+                    */
+
 
                 });
                 messageText = itemView.findViewById(R.id.message);
