@@ -76,8 +76,8 @@ public class DeezerSongActivity extends AppCompatActivity {
             textview.setText("");
 
             myAdapter.notifyDataSetChanged();
-//
-//
+
+
 //            SharedPreferences.
         });
 
