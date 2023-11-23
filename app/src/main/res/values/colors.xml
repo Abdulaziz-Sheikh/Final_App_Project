@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="my_primary">#5900FF</color>
+    <color name="my_text">#000000</color>
+    <color name="my_actionbar">#3800FF</color>
+
 </resources>
