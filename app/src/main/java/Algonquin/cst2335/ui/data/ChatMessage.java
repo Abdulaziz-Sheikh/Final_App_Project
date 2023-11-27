@@ -4,34 +4,31 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+
 @Entity
 public class ChatMessage {
+    @ColumnInfo(name="message")
+    public String message;
+    @ColumnInfo(name="TimeSent")
+    public String timeSent;
+    @ColumnInfo(name="SendOrReceive")
+    public boolean isSentButton;
+
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name="ID")
     public long id;
 
-    @ColumnInfo(name="Message")
-    private String message;
-    @ColumnInfo(name="Time")
-    private String timeSent;
-    @ColumnInfo(name="Issent")
-    private boolean isSentButton;
-
-    public ChatMessage(String message, String timeSent, boolean isSentButton) {
-        this.message = message;
-        this.timeSent = timeSent;
-        this.isSentButton = isSentButton;
+    public ChatMessage(){}
+    public ChatMessage(String m, String t, boolean sent){
+        message = m;
+        timeSent = t;
+        isSentButton = sent;
     }
 
     public String getMessage() {
         return message;
     }
-
-    public String getTimeSent() {
+    public String getTimeSent(){
         return timeSent;
     }
 
-    public boolean isSentButton() {
-        return isSentButton;
-    }
 }
