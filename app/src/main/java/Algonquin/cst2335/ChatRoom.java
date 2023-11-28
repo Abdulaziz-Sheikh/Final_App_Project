@@ -91,7 +91,7 @@ public class ChatRoom extends AppCompatActivity {
             updateFrameLayoutVisibility();
 
         } else if (item.getItemId() == R.id.item_2) {
-            Toast.makeText(this, "Version 1.0, code by @Mo", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Version 1.0, code by @Abdulaziz SHeikh Omar", Toast.LENGTH_LONG).show();
         }
 //        return super.onOptionsItemSelected(item);
         return true;
