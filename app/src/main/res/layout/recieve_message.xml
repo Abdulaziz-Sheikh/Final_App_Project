@@ -15,7 +15,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/message_background"
+        android:background="@drawable/message_backround"
         android:maxWidth="280dp"
         android:text="Received message goes here"
         android:textColor="#F6F3F3"

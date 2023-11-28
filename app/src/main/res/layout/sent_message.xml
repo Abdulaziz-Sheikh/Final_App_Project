@@ -12,7 +12,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginLeft="36dp"
         android:layout_marginTop="4dp"
-        android:background="@drawable/message_background"
+        android:background="@drawable/message_backround"
         android:text="Message goes here"
         android:textColor="#F6F3F3"
         app:layout_constraintLeft_toLeftOf="parent"
