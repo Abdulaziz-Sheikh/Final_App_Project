@@ -1,6 +1,7 @@
 package Algonquin.cst2335;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +23,16 @@ import androidx.room.Room;
 import Algonquin.cst2335.databinding.ActivityChatRoomBinding;
 import Algonquin.cst2335.databinding.RecieveMessageBinding;
 import Algonquin.cst2335.databinding.SentMessageBinding;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +47,7 @@ import Algonquin.cst2335.ui.data.ChatRoomViewModel;
 import Algonquin.cst2335.ui.data.MessageDetailsFragment;
 
 public class ChatRoom extends AppCompatActivity {
+    private static final String API_KEY = "b9b01cac333447c5a870c05469af8311";
     ActivityChatRoomBinding binding;
     ArrayList<ChatMessage> messages = new ArrayList<>();
     ChatRoomViewModel chatModel;
@@ -48,6 +58,8 @@ public class ChatRoom extends AppCompatActivity {
     ChatMessageDAO myDAO;
     Executor thread = Executors.newSingleThreadExecutor();
     private boolean isFrameLayoutVisible = false;
+
+    protected RequestQueue queue = null;
 
 
     @Override
@@ -107,6 +119,7 @@ public class ChatRoom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        queue = Volley.newRequestQueue(this);
 
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -141,9 +154,37 @@ public class ChatRoom extends AppCompatActivity {
         }
 
         binding.sendButton.setOnClickListener(click -> {
-            String msg = binding.textInput.getText().toString();
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
-            String currentDateandTime = sdf.format(new Date());
+                    String msg = binding.textInput.getText().toString();
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
+                    String currentDateandTime = sdf.format(new Date());
+                    //try catch for each search
+                    String url = null;
+
+                    try {
+                        url = "https://api.spoonacular.com/recipes/complexSearch?query=" +
+                                URLEncoder.encode(msg, "UTF-8")
+                                + "&apiKey=" + API_KEY;
+                        Log.d("URL_DEBUG", "Generated URL: " + url);
+                    } catch (UnsupportedEncodingException e) {
+                        Log.e("URL_DEBUG", "Error encoding URL", e);
+                        throw new RuntimeException(e);
+                    }
+
+            //this goes in the button click handler:
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                    response -> {
+                        // Handle successful response
+                    },
+                    error -> {
+                        // Handle error response
+                    }
+            );
+
+            queue.add(request);
+
+
+
+
             boolean isSent = true;
             ChatMessage newMessage = new ChatMessage(msg, currentDateandTime, isSent);
 
@@ -207,6 +248,8 @@ public class ChatRoom extends AppCompatActivity {
             public int getItemCount() {
                 return messages.size();
             }
+
+
             @Override
             public int getItemViewType(int position) {
                 ChatMessage msg = messages.get(position);
@@ -287,4 +330,6 @@ public class ChatRoom extends AppCompatActivity {
             });
         }
     }
+
+
 }
