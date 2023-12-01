@@ -151,6 +151,7 @@ public class ChatRoom extends AppCompatActivity {
         if (messages == null){
             messages = new ArrayList<>();
             chatModel.messages.postValue(messages);
+
         }
 
         binding.sendButton.setOnClickListener(click -> {
@@ -158,17 +159,19 @@ public class ChatRoom extends AppCompatActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
                     String currentDateandTime = sdf.format(new Date());
                     //try catch for each search
-                    String url = null;
+                    String url  = null;
+            try {
+                Log.d("URL_DEBUG", "Original message: " + msg);
+                url = "https://api.spoonacular.com/recipes/complexSearch?query=" +
+                        URLEncoder.encode(msg, "UTF-8")
+                        + "&apiKey=" + API_KEY;
+                Log.d("URL_DEBUG", "Generated URL: " + url); // Add this log statement
+            } catch (UnsupportedEncodingException e) {
+                Log.e("URL_DEBUG", "Error encoding URL", e);
+                throw new RuntimeException(e);
+            }
 
-                    try {
-                        url = "https://api.spoonacular.com/recipes/complexSearch?query=" +
-                                URLEncoder.encode(msg, "UTF-8")
-                                + "&apiKey=" + API_KEY;
-                        Log.d("URL_DEBUG", "Generated URL: " + url);
-                    } catch (UnsupportedEncodingException e) {
-                        Log.e("URL_DEBUG", "Error encoding URL", e);
-                        throw new RuntimeException(e);
-                    }
+
 
             //this goes in the button click handler:
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
