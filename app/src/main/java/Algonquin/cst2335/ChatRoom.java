@@ -177,6 +177,7 @@ public class ChatRoom extends AppCompatActivity {
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {
                         // Handle successful response
+
                     },
                     error -> {
                         // Handle error response
@@ -194,26 +195,6 @@ public class ChatRoom extends AppCompatActivity {
             Executor thread1 = Executors.newSingleThreadExecutor();
 
             thread1.execute(()-> {
-
-                newMessage.id = myDAO.insertMessage(newMessage); // add to database
-
-
-            });
-
-            messages.add(newMessage);
-            myAdapter.notifyItemInserted(messages.size() - 1);
-            binding.textInput.setText("");
-        });
-        binding.receiveButton.setOnClickListener(click -> {
-            String msg = binding.textInput.getText().toString();
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
-            String currentDateandTime = sdf.format(new Date());
-            boolean isSent = false;
-            ChatMessage newMessage = new ChatMessage(msg, currentDateandTime, isSent);
-
-            Executor thread2 = Executors.newSingleThreadExecutor();
-
-            thread2.execute(()->{
 
                 newMessage.id = myDAO.insertMessage(newMessage); // add to database
 
