@@ -36,5 +36,32 @@
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="@+id/timeText"
         app:layout_constraintTop_toBottomOf="@+id/timeText" />
+    <TextView
+        android:id="@+id/recipeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recipe Title goes here"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="65dp" />
+
+    <ImageView
+        android:id="@+id/recipeImage"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="101dp" />
+
+    <TextView
+        android:id="@+id/recipeID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recipe ID goes here"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="-32dp"
+        tools:layout_editor_absoluteY="442dp" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

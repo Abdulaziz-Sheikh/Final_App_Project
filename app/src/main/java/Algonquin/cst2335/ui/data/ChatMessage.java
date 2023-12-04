@@ -16,13 +16,22 @@ public class ChatMessage {
 
     @PrimaryKey(autoGenerate = true)
     public long id;
+    @ColumnInfo(name="recipeTitle")
+    public String recipeTitle;  // New field for recipe title
+
+    @ColumnInfo(name="recipeImage")
+    public String recipeImage;  // New field for recipe image URL
+
 
     public ChatMessage(){}
-    public ChatMessage(String m, String t, boolean sent){
+    public ChatMessage(String m, String t, boolean sent, String title, String imageUrl){
         message = m;
         timeSent = t;
         isSentButton = sent;
+        recipeTitle = title;  // Assign the 'title' parameter to the 'recipeTitle' member variable.
+        recipeImage = imageUrl;  // Assign the 'imageUrl' parameter to the 'recipeImage' member variable.
     }
+
 
     public String getMessage() {
         return message;

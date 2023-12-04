@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase;
 import Algonquin.cst2335.ui.data.ChatMessage;
 import Algonquin.cst2335.ui.data.ChatMessageDAO;
 
-@Database(entities = {ChatMessage.class}, version =1)
+@Database(entities = {ChatMessage.class}, version =2)
 public abstract class MessageDatabase extends RoomDatabase {
 
     public abstract ChatMessageDAO cmDAO();
