@@ -31,6 +31,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -174,15 +178,48 @@ public class ChatRoom extends AppCompatActivity {
 
 
             //this goes in the button click handler:
+            // Inside your Volley callback
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {
-                        // Handle successful response
+                        try {
+                            JSONArray recipesArray = response.getJSONArray("query");
 
+                            // Loop through each recipe
+                            for (int i = 0; i < recipesArray.length(); i++) {
+                                JSONObject recipeObject = recipesArray.getJSONObject(i);
+
+                                // Get recipe details
+                                String recipeTitle = recipeObject.getString("title");
+                                String recipeImage = recipeObject.getString("image");
+
+
+                                String imageUrl= "https://api.spoonacular.com/recipes/" +   ID     + /information?apiKey=YYYYY
+
+                                // Update UI or RecyclerView with the new message
+                                runOnUiThread(() -> {
+                                    messages.add(newMessage);
+                                    myAdapter.notifyItemInserted(messages.size() - 1);
+                                });
+
+                                // Insert into database
+                                thread.execute(() -> {
+                                    newMessage.id = myDAO.insertMessage(newMessage);
+                                });
+
+                                // Do something with recipe information (e.g., display in RecyclerView)
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     },
                     error -> {
                         // Handle error response
+                        Log.e("VolleyError", "Error during JSON request", error);
                     }
             );
+
+// Add the request to the queue
+            queue.add(request);
 
             queue.add(request);
 
