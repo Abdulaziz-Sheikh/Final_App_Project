@@ -172,36 +172,38 @@ public class ChatRoom extends AppCompatActivity {
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {
                         try {
-                            JSONArray recipesArray = response.getJSONArray("query");
+                            // Check if the response contains the expected data structure
+                            if (response.has("results")) {
+                                JSONArray recipesArray = response.getJSONArray("results");
 
-                            // Loop through each recipe
-                            for (int i = 0; i < recipesArray.length(); i++) {
-                                JSONObject recipeObject = recipesArray.getJSONObject(i);
+                                // Loop through each recipe
+                                for (int i = 0; i < recipesArray.length(); i++) {
+                                    JSONObject recipeObject = recipesArray.getJSONObject(i);
 
-                                // Get recipe details
-                                String recipeTitle = recipeObject.getString("title");
-                                String recipeImage = recipeObject.getString("image");
-                                Long recipeID = recipeObject.getLong("id");
+                                    // Get recipe details
+                                    String recipeTitle = recipeObject.getString("title");
+                                    String recipeImage = recipeObject.getString("image");
+                                    Long recipeID = recipeObject.getLong("id");
 
-                                // Construct the URL for the second query to get recipe details
-                                String imageUrl = "https://api.spoonacular.com/recipes/" + recipeID + "/information?apiKey=" + API_KEY;
+                                    // Construct the URL for the second query to get recipe details
+                                    String imageUrl = "https://api.spoonacular.com/recipes/" + recipeID + "/information?apiKey=" + API_KEY;
 
+                                    // Update UI or RecyclerView with the new message
+                                    runOnUiThread(() -> {
+                                        messages.add(new ChatMessage(msg, currentDateandTime, true, recipeTitle, recipeImage));
+                                        myAdapter.notifyItemInserted(messages.size() - 1);
+                                    });
 
+                                    // Insert into the database
+                                    thread.execute(() -> {
+                                        long messageId = myDAO.insertMessage(new ChatMessage(msg, currentDateandTime, true, recipeTitle, recipeImage));
+                                        // Do something with the messageId if needed
+                                    });
 
-                                // Update UI or RecyclerView with the new message
-                                runOnUiThread(() -> {
-                                    messages.add(new ChatMessage(msg, currentDateandTime, true, recipeTitle, recipeImage));
-
-                                    myAdapter.notifyItemInserted(messages.size() - 1);
-                                });
-
-                                 //Insert into the database
-                                thread.execute(() -> {
-                                    long messageId = myDAO.insertMessage(new ChatMessage(msg, currentDateandTime, true, recipeTitle, recipeImage));
-                                   // Do something with the messageId if needed
-                               });
-
-                                // Do something with recipe information (e.g., display in RecyclerView)
+                                    // Do something with recipe information (e.g., display in RecyclerView)
+                                }
+                            } else {
+                                Log.e("ResponseError", "Unexpected response format: " + response.toString());
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -213,8 +215,9 @@ public class ChatRoom extends AppCompatActivity {
                     }
             );
 
-            // Add the request to the queue
+// Add the request to the queue
             queue.add(request);
+
 
             // Clear the input field
             binding.textInput.setText("");

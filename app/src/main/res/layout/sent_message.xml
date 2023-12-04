@@ -33,8 +33,8 @@
 
     <TextView
         android:id="@+id/recipeTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
         android:text="Recipe Title goes here"
         android:visibility="invisible"
         tools:layout_editor_absoluteX="0dp"
