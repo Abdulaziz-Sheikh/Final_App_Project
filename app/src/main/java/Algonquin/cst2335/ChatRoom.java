@@ -74,9 +74,11 @@ public class ChatRoom extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_1) {
+            // Delete Action
             TextView messageText = findViewById(R.id.message);
             ChatMessage m = chatModel.selectedMessage.getValue();
             int position = messages.indexOf(m);
@@ -97,8 +99,11 @@ public class ChatRoom extends AppCompatActivity {
                                     messages.add(position, m);
                                     myAdapter.notifyItemInserted(position);
                                 }).show();
-                    }).setNegativeButton("No", (d, c) -> {
-                    }).create()
+                    })
+                    .setNegativeButton("No", (d, c) -> {
+                        // No Action
+                    })
+                    .create()
                     .show();
 
             // Toggle framelayout visibility.
@@ -107,7 +112,9 @@ public class ChatRoom extends AppCompatActivity {
             updateFrameLayoutVisibility();
 
         } else if (item.getItemId() == R.id.item_2) {
+            // About Action
             Toast.makeText(this, "Version 1.0, code by @Abdulaziz SHeikh Omar", Toast.LENGTH_LONG).show();
+
         }
         return true;
     }
@@ -176,6 +183,10 @@ public class ChatRoom extends AppCompatActivity {
                             if (response.has("results")) {
                                 JSONArray recipesArray = response.getJSONArray("results");
 
+                                //clear the data list
+
+                                messages.clear();
+                                myAdapter.notifyDataSetChanged();
                                 // Loop through each recipe
                                 for (int i = 0; i < recipesArray.length(); i++) {
                                     JSONObject recipeObject = recipesArray.getJSONObject(i);
@@ -191,14 +202,15 @@ public class ChatRoom extends AppCompatActivity {
                                     // Update UI or RecyclerView with the new message
                                     runOnUiThread(() -> {
                                         messages.add(new ChatMessage(msg, currentDateandTime, true, recipeTitle, recipeImage));
+
                                         myAdapter.notifyItemInserted(messages.size() - 1);
                                     });
 
                                     // Insert into the database
-                                    thread.execute(() -> {
-                                        long messageId = myDAO.insertMessage(new ChatMessage(msg, currentDateandTime, true, recipeTitle, recipeImage));
+                                    //thread.execute(() -> {
+                                       // long messageId = myDAO.insertMessage(new ChatMessage(msg, currentDateandTime, true, recipeTitle, recipeImage));
                                         // Do something with the messageId if needed
-                                    });
+                                   // });
 
                                     // Do something with recipe information (e.g., display in RecyclerView)
                                 }
@@ -237,6 +249,7 @@ public class ChatRoom extends AppCompatActivity {
                 holder.messageText.setText(obj.message);
                 holder.timeText.setText(obj.timeSent);
                 holder.recipeTitle.setText(obj.recipeTitle);
+                holder.recipeTitle.setVisibility(View.VISIBLE);
 
                 // Load recipe image using Volley
                 loadImageWithVolley(obj.recipeImage, holder.recipeImage, obj.id);

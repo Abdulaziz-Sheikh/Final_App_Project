@@ -12,4 +12,9 @@
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="About"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/item_save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="Save"
+        app:showAsAction="ifRoom" />
 </menu>

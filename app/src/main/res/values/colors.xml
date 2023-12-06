@@ -7,5 +7,6 @@
     <color name="my_secondary">#E48943</color>
     <color name="my_statusbar">#783F6D</color>
     <color name="my_text">#E91EA5</color>
+    <color name="yellow">#FFEB3B</color>
 
 </resources>

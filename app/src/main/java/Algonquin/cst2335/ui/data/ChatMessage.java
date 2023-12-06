@@ -39,5 +39,12 @@ public class ChatMessage {
     public String getTimeSent(){
         return timeSent;
     }
+    public String getRecipeTitle() {
+        return recipeTitle;
+    }
+
+    public String getRecipeImage() {
+        return recipeImage;
+    }
 
 }
