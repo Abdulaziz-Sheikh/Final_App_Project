@@ -1,11 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Final_App_Project" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="Theme.Final_App_Project" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Primary Brand color. -->
+        <item name="colorPrimary">@color/my_primary</item>
+        <item name="colorSecondary">@color/my_secondary</item>
+
+        <!-- StatusBar color for dark mode -->
+        <item name="android:statusBarColor">@color/my_statusbar</item>
+
+        <item name="android:textColor">@color/my_text</item>
     </style>
 
-    <style name="Theme.Final_App_Project" parent="Base.Theme.Final_App_Project" />
+
+
+
 </resources>
