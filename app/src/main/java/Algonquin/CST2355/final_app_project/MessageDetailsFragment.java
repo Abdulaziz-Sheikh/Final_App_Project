@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,23 +31,26 @@ public class MessageDetailsFragment extends Fragment {
     private RequestQueue queue;
     private Executor thread = Executors.newSingleThreadExecutor();
     private ChatMessageDAO myDAO;
+    private SharedViewModel sharedViewModel;
+    private OnRecipeDeletedListener recipeDeletedListener;
     public MessageDetailsFragment(ChatMessage m,ChatMessageDAO dao) {
         selected = m;
         myDAO=dao;
     }
 
+    public MessageDetailsFragment(ChatMessage m, ChatMessageDAO dao, OnRecipeDeletedListener listener) {
+        selected = m;
+        myDAO = dao;
+        recipeDeletedListener = listener;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        //View view = inflater.inflate(R.layout.details_layout, container, false);
         DetailsLayoutBinding binding = DetailsLayoutBinding.inflate(inflater);
 
         binding.messageText.setText(selected.message);
         binding.timeText.setText(selected.timeSent);
         binding.databaseText.setText("id = " + selected.id);
-       // binding.recipeInfo.setText(selected.recipeInfo);
-      // binding.recipeUrl.setText(selected.recipeUrl);
-
 
         // Initialize the RequestQueue
         queue = Volley.newRequestQueue(requireContext());
@@ -56,11 +61,19 @@ public class MessageDetailsFragment extends Fragment {
         Button saveButton = binding.getRoot().findViewById(R.id.saveButton);
         saveButton.setOnClickListener(view -> showSaveConfirmationDialog());
 
-
+        Button deleteButton = binding.getRoot().findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(view -> showDeleteConfirmationDialog());
 
         return binding.getRoot();
-
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+    }
+
     private void showSaveConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Save Recipe");
@@ -71,8 +84,6 @@ public class MessageDetailsFragment extends Fragment {
     }
 
     private void saveRecipe() {
-        // Perform the save action here, e.g., insert the recipe into a database
-        // You can access the recipe details from the 'selected' object
         ChatMessage savedRecipe = new ChatMessage(
                 selected.message,
                 selected.timeSent,
@@ -81,28 +92,36 @@ public class MessageDetailsFragment extends Fragment {
                 selected.recipeImage
         );
 
-        thread.execute(() -> {
-            long insertedId = myDAO.insertMessage(savedRecipe);
-            savedRecipe.id = insertedId;
+        long insertedId = myDAO.insertMessage(savedRecipe);
+        savedRecipe.id = insertedId;
 
-            // Show a toast or any other feedback to the user
-            requireActivity().runOnUiThread(() -> {
-                Toast.makeText(requireContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
-            });
-        });
+        Toast.makeText(requireContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
+    }
 
-        // Any code here will execute immediately after starting the thread
-        // For example, you can put additional actions or return statements here if needed
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Delete Recipe");
+        builder.setMessage("Do you want to delete this recipe?");
+        builder.setPositiveButton("Yes", (dialogInterface, i) -> deleteRecipe());
+        builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
+        builder.show();
+    }
+
+    private void deleteRecipe() {
+        myDAO.deleteMessage(selected);
+        sharedViewModel.setDeletedRecipe(selected);
+
+        recipeDeletedListener.onRecipeDeleted(selected);
+
+        Toast.makeText(requireContext(), "Recipe deleted!", Toast.LENGTH_SHORT).show();
     }
 
     private void loadImageWithVolley(String imageUrl, ImageView imageView, long recipeId) {
         ImageRequest imgReq = new ImageRequest(imageUrl, (bitmap) -> {
             try {
                 saveBitmapToFile(bitmap, recipeId);
-                requireActivity().runOnUiThread(() -> {
-                    imageView.setImageBitmap(bitmap);
-                    imageView.setVisibility(View.VISIBLE);
-                });
+                imageView.setImageBitmap(bitmap);
+                imageView.setVisibility(View.VISIBLE);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -111,7 +130,10 @@ public class MessageDetailsFragment extends Fragment {
     }
 
     private void saveBitmapToFile(Bitmap bitmap, long recipeId) throws IOException {
-        //Not sure if this is ncessary considering it would just save what i already saved prior in chatroom leave here for now just in case
+        // Not sure if this is necessary considering it would just save what I already saved prior in the chatroom. Leave here for now just in case.
     }
 
+    public interface OnRecipeDeletedListener {
+        void onRecipeDeleted(ChatMessage deletedRecipe);
+    }
 }

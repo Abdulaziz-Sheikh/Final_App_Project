@@ -49,7 +49,7 @@ import java.util.concurrent.Executors;
 import Algonquin.CST2355.final_app_project.databinding.ActivityChatRoomBinding;
 import Algonquin.CST2355.final_app_project.databinding.SentMessageBinding;
 
-public class ChatRoom extends AppCompatActivity {
+public class ChatRoom extends AppCompatActivity   {
     private static final String API_KEY = "b9b01cac333447c5a870c05469af8311";
     ActivityChatRoomBinding binding;
     ArrayList<ChatMessage> messages = new ArrayList<>();
@@ -63,6 +63,7 @@ public class ChatRoom extends AppCompatActivity {
     private boolean isFrameLayoutVisible = false;
 
     protected RequestQueue queue = null;
+    private SharedViewModel sharedViewModel;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,6 +123,7 @@ public class ChatRoom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         queue = Volley.newRequestQueue(this);
 
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
@@ -259,7 +261,7 @@ public class ChatRoom extends AppCompatActivity {
                 return 0; // Always return 0 as you only have one type of view
             }
         });
-
+        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         binding.recycle.setLayoutManager(new LinearLayoutManager(this));
 
         chatModel.selectedMessage.observe(this, (newValue) -> {
@@ -268,10 +270,20 @@ public class ChatRoom extends AppCompatActivity {
 
             binding.fragmentLocation.setVisibility(View.VISIBLE);
             MessageDetailsFragment chatFragment = new MessageDetailsFragment(newValue, myDAO);
-            tx.add(R.id.fragmentLocation, chatFragment);
-            tx.replace(R.id.fragmentLocation, chatFragment);
-            tx.commit();
-            tx.addToBackStack("");
+            if (fMgr.findFragmentByTag(MessageDetailsFragment.class.getSimpleName()) == null) {
+                // Replace the existing fragment with the new one
+                tx.replace(R.id.fragmentLocation, chatFragment);
+
+                // Add the transaction to the back stack
+                tx.addToBackStack(null);
+
+                // Commit the transaction
+                tx.commit();
+            }
+           // tx.add(R.id.fragmentLocation, chatFragment);
+           // tx.replace(R.id.fragmentLocation, chatFragment);
+           // tx.commit();
+           // tx.addToBackStack("");
         });
     }
 
