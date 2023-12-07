@@ -54,7 +54,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="37dp"
-        android:text="SEND"
+        android:text="SEARCH "
         app:layout_constraintBottom_toTopOf="@+id/toolbar"
         app:layout_constraintEnd_toStartOf="@+id/textInput"
         app:layout_constraintHorizontal_bias="0.25"

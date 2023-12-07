@@ -75,41 +75,13 @@ public class ChatRoom extends AppCompatActivity   {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_1) {
             // Delete Action
-            TextView messageText = findViewById(R.id.message);
-            ChatMessage m = chatModel.selectedMessage.getValue();
-            int position = messages.indexOf(m);
-            AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
-            builder.setMessage("Do you want to delete the message: " + messageText.getText())
-                    .setTitle("Question: ")
-                    .setPositiveButton("Yes", (d, c) -> {
-                        thread.execute(() -> {
-                            myDAO.deleteMessage(m);
-                        });
-                        messages.remove(position);
-                        myAdapter.notifyItemRemoved(position);
-                        Snackbar.make(messageText, "You deleted message #" + position, Snackbar.LENGTH_LONG)
-                                .setAction("Undo", cl -> {
-                                    thread.execute(() -> {
-                                        myDAO.insertMessage(m);
-                                    });
-                                    messages.add(position, m);
-                                    myAdapter.notifyItemInserted(position);
-                                }).show();
-                    })
-                    .setNegativeButton("No", (d, c) -> {
-                        // No Action
-                    })
-                    .create()
-                    .show();
 
-            // Toggle framelayout visibility.
-            isFrameLayoutVisible = !isFrameLayoutVisible;
-            FrameLayout frameLayout = binding.fragmentLocation;
-            updateFrameLayoutVisibility();
 
         } else if (item.getItemId() == R.id.item_2) {
             // About Action
-            Toast.makeText(this, "Version 1.0, code by @Abdulaziz SHeikh Omar", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Version 1.0, code by @Abdulaziz SHeikh Omar" +
+                    "Search Function to look for recipe" +
+                    "PLease input a recipe into the search", Toast.LENGTH_LONG).show();
 
         }
         return true;
@@ -152,7 +124,7 @@ public class ChatRoom extends AppCompatActivity   {
             messages = new ArrayList<>();
             chatModel.messages.postValue(messages);
         }
-        binding.sendButton.setText(R.string.app_name);
+        binding.textInput.setText(R.string.button_message);
         binding.sendButton.setOnClickListener(click -> {
             String msg = binding.textInput.getText().toString();
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");

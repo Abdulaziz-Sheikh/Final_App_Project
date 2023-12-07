@@ -2,5 +2,5 @@
 <resources>
     <string name="app_name">Search eh!</string>
     <string name="hello_message">yello!</string>
-    <string name="button_message">im button</string>
+    <string name="button_message">Search eh!</string>
 </resources>

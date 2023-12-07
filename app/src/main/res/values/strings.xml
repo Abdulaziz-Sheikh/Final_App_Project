@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Final_App_Project</string>
     <string name="hello_message">Hello world!</string>
-    <string name="button_message">im a button</string>
+    <string name="button_message">british search</string>
     <string name="editmessage"> IM AN EDIT TEXT </string>
     <string name="hinttext">hint text</string>
 </resources>
