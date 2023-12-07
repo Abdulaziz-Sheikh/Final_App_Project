@@ -17,16 +17,19 @@ import Algonquin.CST2355.final_app_project.databinding.ActivityChatRoomBinding;
 import Algonquin.CST2355.final_app_project.databinding.SentRowBinding;
 
 public class ChatRoom extends AppCompatActivity {
-    ArrayList<String> messages = new ArrayList<>(); // no message empty storing for now
+
     ActivityChatRoomBinding binding;
+    ArrayList<String> messages = new ArrayList<>(); // no message empty storing for now
+
     RecyclerView.Adapter<MyRowHolder> myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding =ActivityChatRoomBinding.inflate(getLayoutInflater());
+        binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.search.setOnClickListener( cli ->{
+
+        binding.search.setOnClickListener( click ->{
             messages.add("New Recipe" + messages.size());
             myAdapter.notifyDataSetChanged();
         });

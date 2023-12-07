@@ -4,29 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/androidbackground"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/deezer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="225dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="59dp"
         android:text="Deezer Song Picker"
-        tools:layout_editor_absoluteX="116dp"
-        tools:layout_editor_absoluteY="122dp" />
+        app:layout_constraintBottom_toTopOf="@+id/recipieSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/introductionText" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/introductionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="High Welcome to our project"
-        tools:layout_editor_absoluteX="116dp"
-        tools:layout_editor_absoluteY="50dp" />
+        android:layout_marginTop="107dp"
+        android:layout_marginBottom="80dp"
+        android:text="Welcome"
+        app:layout_constraintBottom_toTopOf="@+id/deezer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/sunriselookup"
+        android:layout_width="225dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="200dp"
+        android:text="Sunrise and Sunset Lookup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipieSearch" />
 
     <Button
         android:id="@+id/recipieSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="225dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="58dp"
         android:text="Recipe Search "
-        tools:layout_editor_absoluteX="134dp"
-        tools:layout_editor_absoluteY="218dp" />
+        app:layout_constraintBottom_toTopOf="@+id/sunriselookup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deezer" />
 </androidx.constraintlayout.widget.ConstraintLayout>
