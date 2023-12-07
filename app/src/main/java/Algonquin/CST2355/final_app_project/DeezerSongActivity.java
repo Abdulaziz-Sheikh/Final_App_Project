@@ -169,24 +169,6 @@ public class DeezerSongActivity extends AppCompatActivity {
 
 
 
-        /**
-         * Display the artist that's searched for
-         *
-         * Use sharedpreferences for search history
-         *
-         * Retrive Data using JSON (Volley)
-         *
-         * Use A Help menu
-         *
-         * Activity Must be accessable by selecting a graphical Icon, like selecting tabs.
-         * - Cooking Recipe: Food png
-         * - Deezer Song: Musical note
-         * - Sunrise sunset look up: Sun/moon logo
-         *
-         *
-         * Second Language (Easy just do it through strings-fr.xml)
-         */
-
         //Working Method For Shared Preferences [Copy This Exact Code]
 //        SharedPreferences searchedArtist = getSharedPreferences("SearchHistoryData", Context.MODE_PRIVATE );
 //        String artistTyped = searchedArtist.getString("ArtistName", "");
@@ -386,10 +368,7 @@ public class DeezerSongActivity extends AppCompatActivity {
 //                                        myAdapter.notifyItemRemoved(position);
 
 
-
-
             });
-
 
             //like onCreate above
             artistID = itemView.findViewById(R.id.artistID);
