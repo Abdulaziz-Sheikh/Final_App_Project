@@ -75,7 +75,9 @@ public class ChatRoom extends AppCompatActivity   {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.item_1) {
             // Delete Action
+            showSnackbar("Use the search button instead of delete");
 
+            return true;
 
         } else if (item.getItemId() == R.id.item_2) {
             // About Action
@@ -304,5 +306,15 @@ public class ChatRoom extends AppCompatActivity   {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
         fOut.flush();
         fOut.close();
+    }
+    private void showSnackbar(String message) {
+        // Use the root view of your activity or any other suitable view
+        View rootView = findViewById(android.R.id.content);
+
+        // Create a Snackbar with the given message
+        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
+
+        // Show the Snackbar
+        snackbar.show();
     }
 }
