@@ -50,7 +50,7 @@ import Algonquin.CST2355.final_app_project.databinding.ActivityChatRoomBinding;
 import Algonquin.CST2355.final_app_project.databinding.SentMessageBinding;
 
 public class ChatRoom extends AppCompatActivity   {
-    private static final String API_KEY = "b9b01cac333447c5a870c05469af8311";
+    private static final String API_KEY = "f34c8a33e76a419fb7cb5d0edec8af3f";
     ActivityChatRoomBinding binding;
     ArrayList<ChatMessage> messages = new ArrayList<>();
     ChatRoomViewModel chatModel;
@@ -152,7 +152,7 @@ public class ChatRoom extends AppCompatActivity   {
             messages = new ArrayList<>();
             chatModel.messages.postValue(messages);
         }
-
+        binding.sendButton.setText(R.string.app_name);
         binding.sendButton.setOnClickListener(click -> {
             String msg = binding.textInput.getText().toString();
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");

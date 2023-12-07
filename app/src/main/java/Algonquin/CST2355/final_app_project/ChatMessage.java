@@ -21,8 +21,8 @@ public class ChatMessage {
     @ColumnInfo(name="recipeImage")
     public String recipeImage;  // New field for recipe image URL
 
-   // @ColumnInfo(name="recipeInfo")
-   // public String recipeInfo;  // New field for recipe info
+    @ColumnInfo(name="recipeInfo")
+    public String recipeInfo;  // New field for recipe info
 
   //  @ColumnInfo(name="recipeUrl")
   //  public String recipeUrl;  // New field for recipe url
@@ -36,7 +36,7 @@ public class ChatMessage {
         recipeTitle = title;  // Assign the 'title' parameter to the 'recipeTitle' member variable.
         recipeImage = imageUrl;  // Assign the 'imageUrl' parameter to the 'recipeImage' member variable.
        // recipeUrl= url;
-       //recipeInfo= info;
+      // recipeInfo= info;
     }
 
     public String getMessage() {

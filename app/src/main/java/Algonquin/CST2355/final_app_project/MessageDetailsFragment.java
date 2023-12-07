@@ -79,8 +79,10 @@ public class MessageDetailsFragment extends Fragment {
                     selected.message,
                     selected.timeSent,
                     selected.isSentButton,
+
                     selected.recipeTitle,
                     selected.recipeImage
+
             );
 
             long insertedId = myDAO.insertMessage(savedRecipe);

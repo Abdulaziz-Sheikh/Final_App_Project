@@ -1,0 +1,20 @@
+<!-- res/menu/main_menu.xml -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:title="Recipe"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_cooking" /> <!-- Replace ic_cooking with the actual name of your cooking image -->
+
+    <item
+        android:id="@+id/action_search2"
+        android:title="Deezer Song"
+        app:showAsAction="never"
+        android:icon="@drawable/deezersong" /> <!-- Replace ic_sound with the actual name of your sound/image icon -->
+
+    <!-- Add more menu items as needed -->
+
+</menu>
