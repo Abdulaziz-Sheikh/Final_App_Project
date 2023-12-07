@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +23,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import Algonquin.CST2355.final_app_project.databinding.ActivityDeezerSongBinding;
+import Algonquin.CST2355.final_app_project.databinding.ArtistRowBinding;
 import Algonquin.CST2355.final_app_project.databinding.SentRowBinding;
 
 
@@ -85,9 +89,16 @@ public class DeezerSongActivity extends AppCompatActivity {
         if(option == R.id.homeBtn){
 //            Intent i = new Intent(this, MainActivity.class);
 //            startActivity(i);
-            Toast.makeText(this, "Home Button Clicked", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Loading Home Button", Toast.LENGTH_SHORT).show();
 
 //            Snackbar.make(binding.artistText, "", Snackbar.LENGTH_LONG).show();
+        } else if(option == R.id.cookingRecipe){
+            Toast.makeText(this, "Loading Cooking Recipe", Toast.LENGTH_SHORT).show();
+
+        } else if(option == R.id.sunriselookup){
+            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+
+
         }
 
         return true;
@@ -134,7 +145,7 @@ public class DeezerSongActivity extends AppCompatActivity {
         if(artistNames == null){
             artistModel.artists.postValue(artistNames = new ArrayList<>());
 
-            FavoritesDatabase db = Room.databaseBuilder(getApplicationContext(), FavoritesDatabase.class, "FavoriteArtists").build();
+            FavoritesDatabase db = Room.databaseBuilder(getApplicationContext(), FavoritesDatabase.class, "ArtistsDAO").build();
             fDAO = db.DAO();
 
 
@@ -221,8 +232,10 @@ public class DeezerSongActivity extends AppCompatActivity {
             @Override
             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-                SentRowBinding songBinding = SentRowBinding.inflate(getLayoutInflater());
-                return new MyRowHolder(songBinding.getRoot());
+//                SentRowBinding songBinding = SentRowBinding.inflate(getLayoutInflater());
+//                return new MyRowHolder(songBinding.getRoot());
+                ArtistRowBinding artistRowBinding = ArtistRowBinding.inflate(getLayoutInflater());
+                return new MyRowHolder(artistRowBinding.getRoot());
             }
 
             @Override
@@ -230,8 +243,15 @@ public class DeezerSongActivity extends AppCompatActivity {
 
                 ArtistsDTO a = artistNames.get(position);
 
-                holder.msgText.setText(a.getArtistName());
-                holder.timeText.setText(a.getTimeSent());
+                String image = a.getPictureUrl();
+                Picasso.get().load(image)
+                        .error(R.drawable.androidbackground)
+                        .into(holder.artistPfp);
+
+
+                holder.artistID.setText("" + a.getId());
+                holder.artistName.setText(a.getArtistName());
+                holder.tracks.setText(a.getTracklist());
 
             }
 
@@ -296,14 +316,15 @@ public class DeezerSongActivity extends AppCompatActivity {
                                     JSONObject artist = artistsArray.getJSONObject(i);
 
 
-                                    String ID = artist.getString("id");
+                                    long ID = artist.getLong("id");
                                     String artistName = artist.getString("name");
-                                    String pictureUrl = artist.getString("picture");
                                     String tracklistUrl = artist.getString("tracklist");
+                                    String pictureUrl = artist.getString("picture");
 
 
-                                    ArtistsDTO artists = new ArtistsDTO(artistName, pictureUrl,true);
+                                    ArtistsDTO artists = new ArtistsDTO(ID, artistName, tracklistUrl, pictureUrl);
                                     artistNames.add(artists);
+
 
                                 }
 
@@ -336,8 +357,12 @@ public class DeezerSongActivity extends AppCompatActivity {
 
     class MyRowHolder extends RecyclerView.ViewHolder {
 
-        public TextView msgText;
-        public TextView timeText;
+        public TextView artistID;
+        public TextView artistName;
+
+        public TextView tracks;
+
+        public ImageView artistPfp;
 
         public MyRowHolder(@NonNull View itemView) {
             super(itemView);
@@ -367,8 +392,11 @@ public class DeezerSongActivity extends AppCompatActivity {
 
 
             //like onCreate above
-            msgText = itemView.findViewById(R.id.message);
-            timeText = itemView.findViewById(R.id.time); //find the ids from XML to java
+            artistID = itemView.findViewById(R.id.artistID);
+            artistName = itemView.findViewById(R.id.artistName);
+            tracks = itemView.findViewById(R.id.tracklist);
+            artistPfp = itemView.findViewById(R.id.artistPic);
+
         }
     }
 }

@@ -12,9 +12,18 @@
     />
 
     <item
-        android:id="@+id/options"
-        android:title="Options"
-        app:showAsAction="never" />
+        android:id="@+id/cookingRecipe"
+        android:icon="@drawable/cookingpot"
+        android:title="Favorites"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/sunriseSunsetLookup"
+        android:icon="@drawable/sunmoon"
+        android:title="Sunrise Sunset Lookup"
+        app:showAsAction="ifRoom" />
+
+
+
 
 
 

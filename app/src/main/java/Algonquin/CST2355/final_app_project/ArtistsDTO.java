@@ -9,29 +9,31 @@ public class ArtistsDTO {
 
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name="id")
     public long id;
 
-    @ColumnInfo(name = "Artist")
-    String artistName;
+    @ColumnInfo(name="ArtistName")
+    protected String artistName;
 
     @ColumnInfo(name="tracklist")
-    String tracklist;
+    protected String tracklist;
 
+    @ColumnInfo(name="pictureUrl")
+    protected String pictureUrl;
 
-    @ColumnInfo(name = "isFavorite")
-    boolean setToFavorite;
 
     ArtistsDTO(){}
 
-    ArtistsDTO(long id, String artist, String tracklist, boolean favorite){
+    ArtistsDTO(long id, String artist, String tracklist, String pictureUrl){
         this.id = id;
         this.artistName = artist;
         this.tracklist = tracklist;
-        setToFavorite = favorite;
+        this.pictureUrl = pictureUrl;
     }
 
-    public String
+    public long getId(){
+        return id;
+    }
     public String getArtistName() {
         return artistName;
     }
@@ -39,7 +41,11 @@ public class ArtistsDTO {
     public String getTimeSent(){
         return tracklist;
     }
-    public boolean favoriteSet(){
-        return setToFavorite;
+    public String getTracklist(){
+        return tracklist;
+    }
+
+    public String getPictureUrl(){
+        return pictureUrl;
     }
 }

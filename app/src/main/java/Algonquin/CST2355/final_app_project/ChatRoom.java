@@ -64,8 +64,8 @@ public class ChatRoom extends AppCompatActivity {
 
         public MyRowHolder(@NonNull View itemView) {
             super(itemView);
-            message =itemView.findViewById(R.id.message);
-            time=itemView.findViewById(R.id.time);
+            message = itemView.findViewById(R.id.message);
+//            time=itemView.findViewById(R.id.time);
 
         }
     }
