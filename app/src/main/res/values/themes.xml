@@ -4,7 +4,7 @@
         <!-- Customize your light theme here. -->
         <item name="color">@color/my_actionbar</item>
 
-         <item name="colorPrimary">@color/my_primary</item>
+         <item name="colorPrimary">@color/my_actionbar</item>
     </style>
 
     <style name="Theme.Final_App_Project" parent="Base.Theme.Final_App_Project" />
