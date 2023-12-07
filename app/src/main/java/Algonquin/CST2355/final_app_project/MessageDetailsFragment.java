@@ -1,6 +1,7 @@
 package Algonquin.CST2355.final_app_project;
 
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,18 +32,13 @@ public class MessageDetailsFragment extends Fragment {
     private RequestQueue queue;
     private Executor thread = Executors.newSingleThreadExecutor();
     private ChatMessageDAO myDAO;
-    private SharedViewModel sharedViewModel;
-    private OnRecipeDeletedListener recipeDeletedListener;
+
+
     public MessageDetailsFragment(ChatMessage m,ChatMessageDAO dao) {
         selected = m;
         myDAO=dao;
     }
 
-    public MessageDetailsFragment(ChatMessage m, ChatMessageDAO dao, OnRecipeDeletedListener listener) {
-        selected = m;
-        myDAO = dao;
-        recipeDeletedListener = listener;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,12 +63,6 @@ public class MessageDetailsFragment extends Fragment {
         return binding.getRoot();
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-    }
 
     private void showSaveConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -84,19 +74,26 @@ public class MessageDetailsFragment extends Fragment {
     }
 
     private void saveRecipe() {
-        ChatMessage savedRecipe = new ChatMessage(
-                selected.message,
-                selected.timeSent,
-                selected.isSentButton,
-                selected.recipeTitle,
-                selected.recipeImage
-        );
+        AsyncTask.execute(() -> {
+            ChatMessage savedRecipe = new ChatMessage(
+                    selected.message,
+                    selected.timeSent,
+                    selected.isSentButton,
+                    selected.recipeTitle,
+                    selected.recipeImage
+            );
 
-        long insertedId = myDAO.insertMessage(savedRecipe);
-        savedRecipe.id = insertedId;
+            long insertedId = myDAO.insertMessage(savedRecipe);
+            savedRecipe.id = insertedId;
 
-        Toast.makeText(requireContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
+            requireActivity().runOnUiThread(() -> {
+                Toast.makeText(requireContext(), "Recipe saved!", Toast.LENGTH_SHORT).show();
+            });
+        });
     }
+
+
+
 
     private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -108,13 +105,27 @@ public class MessageDetailsFragment extends Fragment {
     }
 
     private void deleteRecipe() {
-        myDAO.deleteMessage(selected);
-        sharedViewModel.setDeletedRecipe(selected);
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setMessage("Do you want to delete this recipe?")
+                .setTitle("Question: ")
+                .setPositiveButton("Yes", (dialogInterface, i) -> {
+                    AsyncTask.execute(() -> {
+                        myDAO.deleteMessage(selected);
 
-        recipeDeletedListener.onRecipeDeleted(selected);
-
-        Toast.makeText(requireContext(), "Recipe deleted!", Toast.LENGTH_SHORT).show();
+                        requireActivity().runOnUiThread(() -> {
+                            Toast.makeText(requireContext(), "Recipe deleted!", Toast.LENGTH_SHORT).show();
+                            // You may add additional UI update logic here if needed.
+                        });
+                    });
+                })
+                .setNegativeButton("No", (dialogInterface, i) -> {
+                    // No Action
+                })
+                .create()
+                .show();
     }
+
+
 
     private void loadImageWithVolley(String imageUrl, ImageView imageView, long recipeId) {
         ImageRequest imgReq = new ImageRequest(imageUrl, (bitmap) -> {
@@ -133,7 +144,5 @@ public class MessageDetailsFragment extends Fragment {
         // Not sure if this is necessary considering it would just save what I already saved prior in the chatroom. Leave here for now just in case.
     }
 
-    public interface OnRecipeDeletedListener {
-        void onRecipeDeleted(ChatMessage deletedRecipe);
-    }
+
 }

@@ -63,7 +63,7 @@ public class ChatRoom extends AppCompatActivity   {
     private boolean isFrameLayoutVisible = false;
 
     protected RequestQueue queue = null;
-    private SharedViewModel sharedViewModel;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -261,7 +261,7 @@ public class ChatRoom extends AppCompatActivity   {
                 return 0; // Always return 0 as you only have one type of view
             }
         });
-        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+
         binding.recycle.setLayoutManager(new LinearLayoutManager(this));
 
         chatModel.selectedMessage.observe(this, (newValue) -> {
@@ -270,20 +270,12 @@ public class ChatRoom extends AppCompatActivity   {
 
             binding.fragmentLocation.setVisibility(View.VISIBLE);
             MessageDetailsFragment chatFragment = new MessageDetailsFragment(newValue, myDAO);
-            if (fMgr.findFragmentByTag(MessageDetailsFragment.class.getSimpleName()) == null) {
-                // Replace the existing fragment with the new one
-                tx.replace(R.id.fragmentLocation, chatFragment);
 
-                // Add the transaction to the back stack
-                tx.addToBackStack(null);
 
-                // Commit the transaction
-                tx.commit();
-            }
-           // tx.add(R.id.fragmentLocation, chatFragment);
-           // tx.replace(R.id.fragmentLocation, chatFragment);
-           // tx.commit();
-           // tx.addToBackStack("");
+           tx.add(R.id.fragmentLocation, chatFragment);
+           tx.replace(R.id.fragmentLocation, chatFragment);
+           tx.commit();
+           tx.addToBackStack("");
         });
     }
 
