@@ -3,8 +3,8 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
 
-    @Database(entities = {FavoriteArtists.class}, version = 1)
+    @Database(entities = {ArtistsDTO.class}, version = 1)
 
     public abstract class FavoritesDatabase  extends RoomDatabase {
-        public abstract FavoriteArtistDAO DAO();
+        public abstract ArtistDAO DAO();
     }

@@ -9,6 +9,8 @@
         android:id="@+id/artistName"
         android:layout_width="136dp"
         android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Message goes here"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

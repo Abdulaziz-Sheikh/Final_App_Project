@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class FavoriteArtists {
+public class ArtistsDTO {
 
 
     @PrimaryKey(autoGenerate = true)
@@ -13,29 +13,31 @@ public class FavoriteArtists {
     public long id;
 
     @ColumnInfo(name = "Artist")
-    String artist;
+    String artistName;
 
-    @ColumnInfo(name="timeSent")
-    String timeSent;
+    @ColumnInfo(name="tracklist")
+    String tracklist;
 
 
     @ColumnInfo(name = "isFavorite")
     boolean setToFavorite;
 
-    FavoriteArtists(){}
+    ArtistsDTO(){}
 
-    FavoriteArtists(String artist, String time, boolean favorite){
-        this.artist = artist;
-        timeSent = time;
+    ArtistsDTO(long id, String artist, String tracklist, boolean favorite){
+        this.id = id;
+        this.artistName = artist;
+        this.tracklist = tracklist;
         setToFavorite = favorite;
     }
 
-    public String getArtist() {
-        return artist;
+    public String
+    public String getArtistName() {
+        return artistName;
     }
 
     public String getTimeSent(){
-        return timeSent;
+        return tracklist;
     }
     public boolean favoriteSet(){
         return setToFavorite;

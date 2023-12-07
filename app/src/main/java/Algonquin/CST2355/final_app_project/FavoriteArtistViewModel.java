@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class FavoriteArtistViewModel extends ViewModel {
 
-    public MutableLiveData<ArrayList<FavoriteArtists>> artists = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<ArtistsDTO>> artists = new MutableLiveData<>();
 
 
 }

@@ -9,13 +9,13 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface FavoriteArtistDAO {
+public interface ArtistDAO {
     @Insert
-    long insertArtist(FavoriteArtists a);
+    long insertArtist(ArtistsDTO a);
 
-    @Query("select * from favoriteartists")
-    List<FavoriteArtists> getAllArtist();
+    @Query("select * from ArtistsDTO")
+    List<ArtistsDTO> getAllArtist();
 
     @Delete
-    void deleteArtist(FavoriteArtists a);
+    void deleteArtist(ArtistsDTO a);
 }

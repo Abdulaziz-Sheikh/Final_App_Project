@@ -2,18 +2,19 @@ package Algonquin.CST2355.final_app_project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +23,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -55,7 +55,7 @@ public class DeezerSongActivity extends AppCompatActivity {
     /**
      * Artist ArrayList
      */
-    ArrayList<FavoriteArtists> artistNames = new ArrayList<>();
+    ArrayList<ArtistsDTO> artistNames = new ArrayList<>();
 
     /**
      * ArtistModel
@@ -66,11 +66,10 @@ public class DeezerSongActivity extends AppCompatActivity {
     /**
      * Favorite Artists DAO
      */
-    FavoriteArtistDAO fDAO;
+    ArtistDAO fDAO;
 
 
     //Variables for Volley
-
     protected String nameOfArtist;
     RequestQueue queue = null;
 
@@ -106,28 +105,30 @@ public class DeezerSongActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_deezer_song);
 
         queue = Volley.newRequestQueue(this);
-//        getSupportActionBar().setTitle("");
 
-
-
-
-
-
-
-        TextView textview = findViewById(R.id.artistText);
-        Button enterBtn = findViewById(R.id.enterBtn);
+//        TextView textview = findViewById(R.id.searchField);
+//        Button enterBtn = findViewById(R.id.enterBtn);
 
         binding = ActivityDeezerSongBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //Create Toolbar
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+
+
+
 
 
 
 
         //Retrieve the array list
         artistModel = new ViewModelProvider(this).get(FavoriteArtistViewModel.class);
+
+        artistNames = artistModel.artists.getValue();
 
 
         if(artistNames == null){
@@ -143,7 +144,7 @@ public class DeezerSongActivity extends AppCompatActivity {
 
             thread.execute(() ->{
 
-                List<FavoriteArtists> fromDatabase = fDAO.getAllArtist();
+                List<ArtistsDTO> fromDatabase = fDAO.getAllArtist();
                 artistNames.addAll(fromDatabase);
 
             });
@@ -151,111 +152,67 @@ public class DeezerSongActivity extends AppCompatActivity {
         }
 
 
-//        if (messages == null) {
-//            chatModel.messages.postValue(messages = new ArrayList<>());
+
+
+
+
+
+
+        /**
+         * Display the artist that's searched for
+         *
+         * Use sharedpreferences for search history
+         *
+         * Retrive Data using JSON (Volley)
+         *
+         * Use A Help menu
+         *
+         * Activity Must be accessable by selecting a graphical Icon, like selecting tabs.
+         * - Cooking Recipe: Food png
+         * - Deezer Song: Musical note
+         * - Sunrise sunset look up: Sun/moon logo
+         *
+         *
+         * Second Language (Easy just do it through strings-fr.xml)
+         */
+
+        //Working Method For Shared Preferences [Copy This Exact Code]
+//        SharedPreferences searchedArtist = getSharedPreferences("SearchHistoryData", Context.MODE_PRIVATE );
+//        String artistTyped = searchedArtist.getString("ArtistName", "");
+//        binding.searchField.setHint(artistTyped);
+
+        //Add Artist To database Test
+//        binding.addArtist.setOnClickListener(click -> {
+//            Toast.makeText(this, "Add Test", Toast.LENGTH_SHORT).show();
+            //Working Method For Shared Preferences [Copy This Exact Code]
+//            SharedPreferences.Editor editor = searchedArtist.edit();
+//            editor.putString("ArtistName", binding.searchField.getText().toString());
+//            editor.apply();
+
+
+//            Toast.makeText(this, "Adding Artist to Database!", Toast.LENGTH_SHORT).show();
 //
-//            //Build Database
-//            MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "ChatMessage").build();
-//            mDAO = db.cmDAO();
+//            String newlyAdded = binding.searchField.getText().toString();
+//            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
+//            String currentDateandTime = sdf.format(new Date());
+//            FavoriteArtists artistsName = new FavoriteArtists(newlyAdded, currentDateandTime, true);
+//            artistNames.add(artistsName);
 //
-//            //Get All Entries from database
-//            Executor thread = Executors.newSingleThreadExecutor();
-//            thread.execute( () -> {
+//            //Clear Previous text
+//            binding.searchField.setText("");
 //
-//                List<ChatMessage> fromDatabase = mDAO.getAllMessages();//return a List
-//                messages.addAll(fromDatabase);//this adds all messages from the database
+//            myAdapter.notifyDataSetChanged();
+//
+//            Executor thread1 = Executors.newSingleThreadExecutor();
+//            thread1.execute(( ) -> {
+//                //this is on a background thread
+//                artistsName.id = fDAO.insertArtist(artistsName); //get the ID from the database
 //
 //            });
-//        }
+
+//        });
 
 
-
-
-        //Entering in a new Artist
-        binding.enterBtn.setOnClickListener(click -> {
-
-            //Get Input from Text Box
-            String inputtedArtist = binding.artistText.getText().toString();
-
-            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd-MMM-yyyy hh-mm-ss a");
-            String currentDateandTime = sdf.format(new Date());
-
-            //Typed Artist
-            FavoriteArtists a = new FavoriteArtists(inputtedArtist, currentDateandTime, true);
-            artistNames.add(a);//Add new Artist Object
-
-            //Set Text Back to default
-            binding.artistText.setText("");
-
-            myAdapter.notifyDataSetChanged();
-
-//            SharedPreferences.
-
-
-            /*
-                Whatever Artist you input it should be saved into the history
-
-                Shared Preferences. Set emailText to the email address typed
-
-
-                SharedPreferences searchedArtist = getSharedPreferences("MyData", Context.MODE_PRIVATE );
-                String emailAddress = searchedArtist.getString("LoginName", "");
-                emailText.setText(emailAddress);
-             */
-
-            /**
-             * Display the artist that's searched for
-             *
-             * Use sharedpreferences for search history
-             *
-             * Retrive Data using JSON (Volley)
-             *
-             * Use A Help menu
-             *
-             * Activity Must be accessable by selecting a graphical Icon, like selecting tabs.
-             * - Cooking Recipe: Food png
-             * - Deezer Song: Musical note
-             * - Sunrise sunset look up: Sun/moon logo
-             *
-             *
-             * Second Language (Easy just do it through strings.xml)
-             */
-        });
-
-        EditText searchedArtist  = findViewById(R.id.artistText);
-
-
-        //This is a test Button
-        binding.volleyBtn.setOnClickListener(click -> {
-            nameOfArtist = binding.artistText.getText().toString();
-
-            Toast.makeText(this, "Volley Clicked", Toast.LENGTH_SHORT).show();
-
-            String stringUrl = "https://api.deezer.com/search/artist/?q=" + nameOfArtist + "";
-
-            Toast.makeText(DeezerSongActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, stringUrl, null,
-                    (response) -> {
-
-                        try {
-                            JSONObject id = response.getJSONObject("id");
-
-                            String name = response.getString(nameOfArtist);
-
-
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-
-
-                    } ,
-                    (error) -> { });
-            queue.add(request);
-
-
-
-        });
 
         //Setting up a new adapter for the recycler view
         binding.artistRecyclerView.setAdapter(
@@ -264,22 +221,16 @@ public class DeezerSongActivity extends AppCompatActivity {
             @Override
             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-
-                /* This is where you last left off. You're trying to figure out why the messages won't print on the
-                * recycler view */
-
                 SentRowBinding songBinding = SentRowBinding.inflate(getLayoutInflater());
                 return new MyRowHolder(songBinding.getRoot());
-
-
             }
 
             @Override
             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
 
-                FavoriteArtists a = artistNames.get(position);
+                ArtistsDTO a = artistNames.get(position);
 
-                holder.msgText.setText(a.getArtist());
+                holder.msgText.setText(a.getArtistName());
                 holder.timeText.setText(a.getTimeSent());
 
             }
@@ -299,9 +250,6 @@ public class DeezerSongActivity extends AppCompatActivity {
                 else
                     return 1;
             }
-
-
-
         });
 
         //Initialize Recycler View
@@ -312,14 +260,79 @@ public class DeezerSongActivity extends AppCompatActivity {
 
 //        AlertDialog.Builder builder = new AlertDialog.Builder( DeezerSongActivity.this );
 
-//        SharedPreferences preferences = getSharedPreferences("Artists", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        editor.putString("username", "")
+
+        queue = Volley.newRequestQueue(this);
 
 
-//        Snackbar.make(textview, "You deleted message #" + textview., Snackbar.LENGTH_LONG).show();
+        SharedPreferences searchedArtist = getSharedPreferences("SearchHistoryData", Context.MODE_PRIVATE );
+        String artistTyped = searchedArtist.getString("ArtistName", "");
+        binding.searchField.setHint(artistTyped);
 
+
+        binding.searchButton.setOnClickListener(click -> {
+
+        //SharedPreferences
+        SharedPreferences.Editor editor = searchedArtist.edit();
+        editor.putString("ArtistName", binding.searchField.getText().toString());
+        editor.apply();
+
+
+            String apiUrl = "https://api.deezer.com/search/artist/?q=" + binding.searchField.getText().toString();
+
+            // Create a JsonObjectRequest
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, apiUrl, null,
+
+                    //Response
+                    response -> {
+
+                        try {
+                            // Check if there's Results
+                            if (response.has("data")) {
+                                JSONArray artistsArray = response.getJSONArray("data");
+
+                                artistNames.clear();
+
+                                for (int i = 0; i < artistsArray.length(); i++){
+                                    JSONObject artist = artistsArray.getJSONObject(i);
+
+
+                                    String ID = artist.getString("id");
+                                    String artistName = artist.getString("name");
+                                    String pictureUrl = artist.getString("picture");
+                                    String tracklistUrl = artist.getString("tracklist");
+
+
+                                    ArtistsDTO artists = new ArtistsDTO(artistName, pictureUrl,true);
+                                    artistNames.add(artists);
+
+                                }
+
+                                myAdapter.notifyDataSetChanged();
+
+
+
+                            } else {
+                                // No results found
+                                Toast.makeText(this, "No results found", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    },
+
+                    //Any Errors That will Occur
+                    error -> {
+                        Toast.makeText(DeezerSongActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+
+            // Add the request to the RequestQueue
+            queue.add(request);
+
+        });
     }
+
+
+
 
     class MyRowHolder extends RecyclerView.ViewHolder {
 
@@ -331,7 +344,24 @@ public class DeezerSongActivity extends AppCompatActivity {
 
             //Click on an Item
             itemView.setOnClickListener(click -> {
-                int rowNum = getAbsoluteAdapterPosition();
+                int position = getAbsoluteAdapterPosition();
+                ArtistsDTO selectedArtists = artistNames.get(position);
+
+                Toast.makeText(DeezerSongActivity.this, "Row: " + position, Toast.LENGTH_SHORT).show();
+
+
+//                FavoriteArtists removedMessage = artistNames.get(position);
+//                Executor thread2 = Executors.newSingleThreadExecutor();
+//                                        thread2.execute(() -> {
+//                                        //delete from database
+//                                        fDAO.deleteArtist(removedMessage);
+//                                        });
+//
+//                                        artistNames.remove(position);
+//                                        myAdapter.notifyItemRemoved(position);
+
+
+
 
             });
 
