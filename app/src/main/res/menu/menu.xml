@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/homeBtn"
+        android:icon="@drawable/homeicon"
+        android:title="Home"
+        app:showAsAction="ifRoom" />
+    />
+
+    <item
+        android:id="@+id/options"
+        android:title="Options"
+        app:showAsAction="never"
+        />
+<!--        android:icon="@draw"-->
+        />
+
+
+</menu>
