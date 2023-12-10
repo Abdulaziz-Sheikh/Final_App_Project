@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name"></string>
     <string name="hello_message">Welcome!</string>
-    <string name="enter_Btn">Enter Button</string>
+    <string name="search_Button">Search</string>
+
+    <string name="search_text">Search Artist</string>
 </resources>

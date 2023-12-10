@@ -12,19 +12,9 @@
     />
 
     <item
-        android:id="@+id/cookingRecipe"
-        android:icon="@drawable/cookingpot"
+        android:id="@+id/favorites"
+        android:icon="@drawable/blackstar"
         android:title="Favorites"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/sunriseSunsetLookup"
-        android:icon="@drawable/sunmoon"
-        android:title="Sunrise Sunset Lookup"
-        app:showAsAction="ifRoom" />
-
-
-
-
-
 
 </menu>

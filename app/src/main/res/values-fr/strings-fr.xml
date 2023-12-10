@@ -2,6 +2,8 @@
 
     <string name="app_name"></string>
     <string name="hello_message">Welcome!</string>
-    <string name="enter_Btn">Bouton Entrée</string>
+    <string name="search_Button">Recherche</string>
+    <string name="search_text">Rechercher un artiste</string>
+
 
 </resources>
